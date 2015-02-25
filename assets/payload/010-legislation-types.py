@@ -9,4 +9,4 @@ content=soup.find(id="content")
 Legislation= content.find_all('a')
 
 for LegislationType in Legislation:
-   print baseurl+LegislationType['href']+","+str(LegislationType.string)
+   print baseurl+LegislationType['href']+","+str(LegislationType.string)+","+LegislationType['href']
