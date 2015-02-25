@@ -7,8 +7,8 @@ mkdir -p $OutputRootDir
 
 CurrentLegislationYearSTART=2015
 CurrentLegislationYearEND=2015
-CurrentLegislationVolumeSTART=20
-CurrentLegislationVolumeEND=30
+CurrentLegislationVolumeSTART=1
+CurrentLegislationVolumeEND=20
 
 for CurrentLegislationYear in $(seq $CurrentLegislationYearSTART $CurrentLegislationYearEND); do
 
