@@ -5,9 +5,17 @@ set -e
 OutputRootDir="/ConnectedGovernment/Raw"
 
 
-Current_legislation_type_url=$(cat /tmp/Current-legislation-type-url)
-Current_legislation_type_name=$(cat /tmp/Current-legislation-type-name)
-Current_legislation_type_name=$(cat /tmp/Current-legislation-type-slug)
+cat /ConnectedGovernment/Gitlab/010-legislation-types | while read line
+do
+  Current_legislation_type_name_safe=$(echo $line | awk '{print $1;}')
+  Current_legislation_type_id=$(echo $line | awk '{print $2;}')
+  Current_legislation_type_slug=$(echo $line | awk '{print $3;}')
+  echo $Current_legislation_type_slug $Current_legislation_type_id $Current_legislation_type_name_safe
+  echo "next!"
+done
+
+
+
 
 echo "$Current_legislation_type_url"
 echo "$Current_legislation_type_name"
