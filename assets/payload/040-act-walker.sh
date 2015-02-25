@@ -1,6 +1,8 @@
 #/bin/bash
 set -e
 
+git config --global user.name "Administrator"
+git config --global user.email "admin@example.com"
 
 OutputRootDir="/ConnectedGovernment/Raw"
 
@@ -57,6 +59,13 @@ do
       echo "ConnectecdGovernment: $LegislationTitle: No legislation $LegislationSection, cleaning up repo"
       rm -f $LegislationOutputDir/$LegislationSection.md
     fi
+    
+    
+    
+    Current_legislation_id=$(gitlab create_project $Current_legislation_type_name_safe | grep -E "(^|\s)$(echo "id" | tr ' ' '_')($|\s)" | awk '{print $4;}')
+
+    gitlab transfer_project_to_group "$Current_legislation_type_id" "$Current_legislation_id"
+    
     
   else
     echo "ConnectecdGovernment: No legislation found"
