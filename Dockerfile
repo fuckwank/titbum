@@ -12,7 +12,8 @@ RUN apt-get update && \
 
 ADD install.sh /install.sh
 RUN chmod +x /install.sh && \
-  /bin/bash -c "/install.sh"
+  /bin/bash -c "/install.sh" && \
+  gem install gitlab_cli
   
 
 ADD start.sh /start.sh
