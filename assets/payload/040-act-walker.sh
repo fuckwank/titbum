@@ -17,7 +17,7 @@ do
   
   LegislationType="$Current_legislation_type_slug"
   LegislationYear="2014"
-  LegislationVolume="24"
+  LegislationVolume="5"
   
   
   LegislationTitle=$(python 039-act-name.py $LegislationType $LegislationYear $LegislationVolume | tr ' ' '_' | tr '(' '_' | tr ')' '_')
@@ -77,7 +77,8 @@ do
     git init
     git add .
     git commit -m "first commit"
-    git remote add origin http://connectedgovernment.uk/$Current_legislation_type_name_safe/$LegislationTitle.git
+    
+    git remote add origin ssh://connectedgovernment.uk:10022/$Current_legislation_type_name_safe/$( echo $LegislationTitle | tr '[:upper:]' '[:lower:]').git
     git push -u origin master
     cd $script_dir
     
