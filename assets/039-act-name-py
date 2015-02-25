@@ -11,9 +11,15 @@ LegislationSectionIdentifierType=["class","id","id"]
 LegislationSectionIdentifierValue=["LegClearFix LegPrelims","viewLegContents","viewLegContents"]
 
 url="http://www.legislation.gov.uk/"+LegislationType+"/"+LegislationYear+"/"+LegislationVolume+"/body?view=plain"
-page=urllib2.urlopen(url)
-soup = BeautifulSoup(page.read())
 
-content=soup.find('h1',{'class':'pageTitle'})
+try:
+   page=urllib2.urlopen(url)
+   soup = BeautifulSoup(page.read())
+   content=soup.find('h1',{'class':'pageTitle'})
+   print content.string
+except urllib2.HTTPError, err:
+   if err.code == 404:
+    print "404 error"
+   else:
+    raise
 
-print content.string
