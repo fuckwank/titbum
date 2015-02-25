@@ -11,6 +11,7 @@ do
    Current_legislation_type_name=$(awk -F"," '{print $2}' /tmp/Current-legislation-type)
    echo "ConnectedGovernment: $Current_legislation_type_name: Createing project"
    gitlab create_group $(echo "$Current_legislation_type_name" | tr ' ' '_') $(echo "$Current_legislation_type_name" | tr ' ' '_')
+   sleep 5s
    echo "ConnectedGovernment: $Current_legislation_type_name: Created project"
 done
 
