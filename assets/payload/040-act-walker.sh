@@ -20,7 +20,7 @@ do
   LegislationVolume="24"
   
   
-  LegislationTitle=$(python 039-act-name.py $LegislationType $LegislationYear $LegislationVolume | tr ' ' '_')
+  LegislationTitle=$(python 039-act-name.py $LegislationType $LegislationYear $LegislationVolume | tr ' ' '_' | tr '(' '_' | tr ')' '_')
   
   if [ "$LegislationTitle" != "404_error" ]; then
     
