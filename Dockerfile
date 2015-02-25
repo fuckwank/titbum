@@ -9,7 +9,10 @@ RUN apt-get update && \
   curl https://pypi.python.org/packages/source/r/reporter/reporter-0.1.2.tar.gz > /root/reporter-0.1.2.tar.gz && \
   pip install /root/reporter-0.1.2.tar.gz && \
   tar -xvzf /root/reporter-0.1.2.tar.gz
-  
+
+ADD install.sh /install.sh
+RUN chmod +x /install.sh && \
+  /bin/bash -c "/install.sh"
   
 
 ADD start.sh /start.sh
