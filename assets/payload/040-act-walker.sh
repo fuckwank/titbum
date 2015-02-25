@@ -6,7 +6,7 @@ OutputRootDir="/ConnectedGovernment/Raw"
 
 LegislationType="ukpga"
 LegislationYear="2014"
-LegislationVolume="20"
+LegislationVolume="24"
 
 
 LegislationTitle=$(python 039-act-name.py $LegislationType $LegislationYear $LegislationVolume | tr ' ' '_')
@@ -15,35 +15,38 @@ if [ "$LegislationTitle" != "404_error" ]; then
   
   echo "ConnectecdGovernment: $LegislationTitle found"
   LegislationOutputDir="$OutputRootDir/$LegislationType/$LegislationTitle"
-  echo $LegislationOutputDir
-  echo "ConnectecdGovernment: Making output directory at $LegislationOutputDir"
+
+  echo "ConnectecdGovernment: $LegislationTitle: Making output directory at $LegislationOutputDir"
   mkdir -p $LegislationOutputDir
   
-  echo "ConnectecdGovernment: Getting legislation introduction"
-  python 040-act.py $LegislationType $LegislationYear $LegislationVolume 0 | html2text > $LegislationOutputDir/intro.md
-  if [ "$schedules" != "404_error" ]; then
-    echo "ConnectecdGovernment: Got legislation introduction, saved at $LegislationOutputDir/introduction.md"
+  LegislationSection="introduction"
+  echo "ConnectecdGovernment: $LegislationTitle: Getting legislation $LegislationSection"
+  python 040-act.py $LegislationType $LegislationYear $LegislationVolume 0 | html2text > $LegislationOutputDir/$LegislationSection.md
+  if [ "$(cat $LegislationOutputDir/$LegislationSection.md | awk '{print $1}')" != "404" ]; then
+    echo "ConnectecdGovernment: $LegislationTitle: Got legislation $LegislationSection, saved at $LegislationOutputDir/$LegislationSection.md"
   else
-    echo "ConnectecdGovernment: No legislation introduction, cleaning up"
-    rm -f $LegislationOutputDir/introduction.md
+    echo "ConnectecdGovernment: $LegislationTitle: No legislation $LegislationSection, cleaning up repo"
+    rm -f $LegislationOutputDir/$LegislationSection.md
   fi
   
-  echo "ConnectecdGovernment: Getting legislation body"
-  python 040-act.py $LegislationType $LegislationYear $LegislationVolume 1 | html2text > $LegislationOutputDir/body.md
-  if [ "$schedules" != "404_error" ]; then
-    echo "ConnectecdGovernment: Got legislation body, saved at $LegislationOutputDir/body.md"
+  LegislationSection="body"
+  echo "ConnectecdGovernment: $LegislationTitle: Getting legislation $LegislationSection"
+  python 040-act.py $LegislationType $LegislationYear $LegislationVolume 1 | html2text > $LegislationOutputDir/$LegislationSection.md
+  if [ "$(cat $LegislationOutputDir/$LegislationSection.md | awk '{print $1}')" != "404" ]; then
+    echo "ConnectecdGovernment: $LegislationTitle: Got legislation $LegislationSection, saved at $LegislationOutputDir/$LegislationSection.md"
   else
-    echo "ConnectecdGovernment: No legislation body, cleaning up"
-    rm -f $LegislationOutputDir/body.md
+    echo "ConnectecdGovernment: $LegislationTitle: No legislation $LegislationSection, cleaning up repo"
+    rm -f $LegislationOutputDir/$LegislationSection.md
   fi
   
-  echo "ConnectecdGovernment: Getting legislation schedules"
-  python 040-act.py $LegislationType $LegislationYear $LegislationVolume 2 | html2text > $LegislationOutputDir/schedules.md
-  if [ "$schedules" != "404_error" ]; then
-    echo "ConnectecdGovernment: Got legislation schedules, saved at $LegislationOutputDir/schedules.md"
+  LegislationSection="schedules"
+  echo "ConnectecdGovernment: $LegislationTitle: Getting legislation $LegislationSection"
+  python 040-act.py $LegislationType $LegislationYear $LegislationVolume 2 | html2text > $LegislationOutputDir/$LegislationSection.md
+  if [ "$(cat $LegislationOutputDir/$LegislationSection.md | awk '{print $1}')" != "404" ]; then
+    echo "ConnectecdGovernment: $LegislationTitle: Got legislation $LegislationSection, saved at $LegislationOutputDir/$LegislationSection.md"
   else
-    echo "ConnectecdGovernment: No legislation schedules, cleaning up"
-    rm -f $LegislationOutputDir/schedules.md
+    echo "ConnectecdGovernment: $LegislationTitle: No legislation $LegislationSection, cleaning up repo"
+    rm -f $LegislationOutputDir/$LegislationSection.md
   fi
   
 else
