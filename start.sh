@@ -9,8 +9,10 @@ export GITLAB_API_PRIVATE_TOKEN="$GITLAB_API_KEY"
 gitlab projects
 
 
-cd /payload && \
-./010-legislation-types.sh && \
-./040-act-walker.sh
+cd /payload
+
+#&& \
+#./010-legislation-types.sh && \
+#./040-act-walker.sh
 
 /bin/bash
