@@ -15,6 +15,8 @@ RUN chmod +x /install.sh && \
   /bin/bash -c "/install.sh"
 
 ADD assets/payload /payload
+
+ADD assets/config/gitlab.yml /root/.gitlab.yml
   
 ADD start.sh /start.sh
 RUN chmod +x /start.sh
