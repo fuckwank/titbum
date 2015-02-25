@@ -1,9 +1,6 @@
 #/bin/bash
 set -e
 
-git config --global user.name "Administrator"
-git config --global user.email "admin@example.com"
-
 OutputRootDir="/ConnectedGovernment/Raw"
 
 mkdir -p $OutputRootDir
@@ -78,7 +75,7 @@ do
     git add .
     git commit -m "first commit"
     
-    git remote add origin ssh://connectedgovernment.uk:10022/$Current_legislation_type_name_safe/$( echo $LegislationTitle | tr '[:upper:]' '[:lower:]').git
+    git remote add origin ssh://git@connectedgovernment.uk:10022/$Current_legislation_type_name_safe/$( echo $LegislationTitle | tr '[:upper:]' '[:lower:]').git
     git push -u origin master
     cd $script_dir
     
