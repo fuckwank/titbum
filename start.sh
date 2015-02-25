@@ -15,6 +15,10 @@ ssh-keygen -t rsa -C "admin@example.com"
 gitlab create_ssh_key 1 "$(cat ~/.ssh/id_rsa.pub)"
 
 
+git config --global user.name "Administrator"
+git config --global user.email "admin@example.com"
+
+
 #&& \
 #./010-legislation-types.sh && \
 #./040-act-walker.sh
