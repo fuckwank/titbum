@@ -15,7 +15,6 @@ RUN chmod +x /install.sh && \
   /bin/bash -c "/install.sh" && \
   gem install gitlab_cli
   
-
 ADD start.sh /start.sh
 RUN chmod +x /start.sh
 
