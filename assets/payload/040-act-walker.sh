@@ -30,11 +30,15 @@ do
     echo "ConnectecdGovernment: $LegislationTitle: Making output directory at $LegislationOutputDir"
     mkdir -p $LegislationOutputDir
     
+    echo "# $LegislationTitle" > $LegislationOutputDir/README.md
+    echo " " >> $LegislationOutputDir/README.md
+    
     LegislationSection="introduction"
     echo "ConnectecdGovernment: $LegislationTitle: Getting legislation $LegislationSection"
     python 040-act.py $LegislationType $LegislationYear $LegislationVolume 0 | html2text > $LegislationOutputDir/$LegislationSection.md
     if [ "$(cat $LegislationOutputDir/$LegislationSection.md | awk '{print $1}')" != "404" ]; then
       echo "ConnectecdGovernment: $LegislationTitle: Got legislation $LegislationSection, saved at $LegislationOutputDir/$LegislationSection.md"
+      echo "[$LegislationSection]($LegislationSection.md)" >> $LegislationOutputDir/README.md
     else
       echo "ConnectecdGovernment: $LegislationTitle: No legislation $LegislationSection, cleaning up repo"
       rm -f $LegislationOutputDir/$LegislationSection.md
@@ -45,6 +49,7 @@ do
     python 040-act.py $LegislationType $LegislationYear $LegislationVolume 1 | html2text > $LegislationOutputDir/$LegislationSection.md
     if [ "$(cat $LegislationOutputDir/$LegislationSection.md | awk '{print $1}')" != "404" ]; then
       echo "ConnectecdGovernment: $LegislationTitle: Got legislation $LegislationSection, saved at $LegislationOutputDir/$LegislationSection.md"
+      echo "[$LegislationSection]($LegislationSection.md)" >> $LegislationOutputDir/README.md
     else
       echo "ConnectecdGovernment: $LegislationTitle: No legislation $LegislationSection, cleaning up repo"
       rm -f $LegislationOutputDir/$LegislationSection.md
@@ -55,6 +60,7 @@ do
     python 040-act.py $LegislationType $LegislationYear $LegislationVolume 2 | html2text > $LegislationOutputDir/$LegislationSection.md
     if [ "$(cat $LegislationOutputDir/$LegislationSection.md | awk '{print $1}')" != "404" ]; then
       echo "ConnectecdGovernment: $LegislationTitle: Got legislation $LegislationSection, saved at $LegislationOutputDir/$LegislationSection.md"
+      echo "[$LegislationSection]($LegislationSection.md)" >> $LegislationOutputDir/README.md
     else
       echo "ConnectecdGovernment: $LegislationTitle: No legislation $LegislationSection, cleaning up repo"
       rm -f $LegislationOutputDir/$LegislationSection.md
@@ -62,9 +68,18 @@ do
     
     
     
-    Current_legislation_id=$(gitlab create_project $Current_legislation_type_name_safe | grep -E "(^|\s)$(echo "id" | tr ' ' '_')($|\s)" | awk '{print $4;}')
+    Current_legislation_id=$(gitlab create_project $LegislationTitle | grep -E "(^|\s)$(echo "id" | tr ' ' '_')($|\s)" | awk '{print $4;}')
 
     gitlab transfer_project_to_group "$Current_legislation_type_id" "$Current_legislation_id"
+    
+    script_dir=$(pwd)
+    cd $LegislationOutputDir
+    git init
+    git add .
+    git commit -m "first commit"
+    git remote add origin http://connectedgovernment.uk/$Current_legislation_type_name_safe/$LegislationTitle.git
+    git push -u origin master
+    cd $script_dir
     
     
   else
