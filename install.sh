@@ -9,4 +9,4 @@ source /etc/profile.d/rvm.sh
 rvm install 2.1.5
 rvm use 2.1.5 --default
 ruby -v
-gem install gitlab_cli
+gem install gitlab
