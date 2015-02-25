@@ -13,6 +13,8 @@ RUN apt-get update && \
 ADD install.sh /install.sh
 RUN chmod +x /install.sh && \
   /bin/bash -c "/install.sh"
+
+ADD assets/payload /payload
   
 ADD start.sh /start.sh
 RUN chmod +x /start.sh
