@@ -5,9 +5,9 @@ set -e
 OutputRootDir="/ConnectedGovernment/Raw"
 
 
-Current_legislation_type_url=$(awk -F"," '{print $1}' /tmp/Current-legislation-type)
-Current_legislation_type_name=$(awk -F"," '{print $2}' /tmp/Current-legislation-type)
-Current_legislation_type_name=$(awk -F"," '{print $3}' /tmp/Current-legislation-type)
+Current_legislation_type_url=$(cat /tmp/Current-legislation-type-url)
+Current_legislation_type_name=$(cat /tmp/Current-legislation-type-name)
+Current_legislation_type_name=$(cat /tmp/Current-legislation-type-slug)
 
 echo "$Current_legislation_type_url"
 echo "$Current_legislation_type_name"
