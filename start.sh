@@ -7,6 +7,7 @@ gitlab projects
 
 
 cd /payload && \
-./010-legislation-types.sh
+./010-legislation-types.sh && \
+./040-act-walker.sh
 
 /bin/bash
