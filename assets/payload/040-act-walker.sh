@@ -4,6 +4,17 @@ set -e
 
 OutputRootDir="/ConnectedGovernment/Raw"
 
+
+Current_legislation_type_url=$(awk -F"," '{print $1}' /tmp/Current-legislation-type)
+Current_legislation_type_name=$(awk -F"," '{print $2}' /tmp/Current-legislation-type)
+Current_legislation_type_name=$(awk -F"," '{print $3}' /tmp/Current-legislation-type)
+
+echo "$Current_legislation_type_url"
+echo "$Current_legislation_type_name"
+echo "$Current_legislation_type_slug"
+
+
+
 LegislationType="ukpga"
 LegislationYear="2014"
 LegislationVolume="24"
