@@ -22,7 +22,7 @@ for CurrentLegislationYear in $(seq $CurrentLegislationYearSTART $CurrentLegisla
       #echo $Current_legislation_type_slug $Current_legislation_type_id $Current_legislation_type_name_safe
       
       LegislationType="$Current_legislation_type_slug"
-      LegislationYear="2014"
+      LegislationYear="$CurrentLegislationYear"
       LegislationVolume="$CurrentLegislationVolume"
       
       LegislationTitleFull=$( python 039-act-name.py $LegislationType $LegislationYear $LegislationVolume )      
@@ -40,10 +40,6 @@ for CurrentLegislationYear in $(seq $CurrentLegislationYearSTART $CurrentLegisla
         echo "---" >> $LegislationOutputDir/README.md
         echo "Welcome to the [ConnectedGovernment](http://connectedgovernment.uk/help) archive of the $LegislationTitleFull." >> $LegislationOutputDir/README.md
         echo "" >> $LegislationOutputDir/README.md
-        echo "This legislation describes itself as:" >> $LegislationOutputDir/README.md 
-        
-     
-        
         
         LegislationSection="introduction"
         echo "ConnectedGovernment: $Current_legislation_type_name_safe: $LegislationTitle: Getting legislation $LegislationSection"
@@ -51,12 +47,19 @@ for CurrentLegislationYear in $(seq $CurrentLegislationYearSTART $CurrentLegisla
         if [ "$(cat $LegislationOutputDir/$LegislationSection.md | awk '{print $1}')" != "404" ]; then
           echo "ConnectedGovernment: $Current_legislation_type_name_safe: $LegislationTitle: Got legislation $LegislationSection, saved at $LegislationOutputDir/$LegislationSection.md"
           
-          echo "The legislation has been collated into the files bellow:" >> $LegislationOutputDir/README.md 
+          echo "The legislation has been collated into the files bellow:" >> $LegislationOutputDir/README.md
+          
+          echo "This legislation describes itself as:" >> $LegislationOutputDir/README.md 
+          echo "" >> $LegislationOutputDir/README.md
+          
+          cat $LegislationOutputDir/$LegislationSection.md | sed '/^#/d' | sed '${/]/d;}' | sed '0{/]/d;}' | sed 's/^/>/' >> $LegislationOutputDir/README.md
+
           echo " * [Legislation $LegislationSection]($LegislationSection.md)" >> $LegislationOutputDir/README.md
         else
           echo "ConnectedGovernment: $Current_legislation_type_name_safe: $LegislationTitle: No legislation $LegislationSection, cleaning up repo"
           rm -f $LegislationOutputDir/$LegislationSection.md
         fi
+        
         
         LegislationSection="body"
         echo "ConnectecdGovernment: $Current_legislation_type_name_safe: $LegislationTitle: Getting legislation $LegislationSection"
@@ -101,7 +104,7 @@ for CurrentLegislationYear in $(seq $CurrentLegislationYearSTART $CurrentLegisla
         
         echo "ConnectedGovernment: Adding files to $LegislationTitleFull repo"
         git add .
-        git commit -m "first commit"
+        git commit -m "Legislation added from upstream source"
         
         echo "ConnectedGovernment: Adding orgin to $LegislationTitleFull repo"
         git remote add origin ssh://git@connectedgovernment.uk:10022/$Current_legislation_type_name_safe/$( echo $LegislationTitle | tr '[:upper:]' '[:lower:]').git
