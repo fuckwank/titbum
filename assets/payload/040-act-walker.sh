@@ -52,7 +52,7 @@ for CurrentLegislationYear in $(seq $CurrentLegislationYearSTART $CurrentLegisla
           echo "This legislation describes itself as:" >> $LegislationOutputDir/README.md 
           echo "" >> $LegislationOutputDir/README.md
           
-          cat $LegislationOutputDir/$LegislationSection.md | sed '/^#/d' | sed '${/]/d;}' | sed '0{/]/d;}' | sed 's/^/>/' >> $LegislationOutputDir/README.md
+          cat $LegislationOutputDir/$LegislationSection.md | sed '/^#/d' | sed '${/]/d;}' | sed '1{/]/d;}' | sed 's/^/>/' >> $LegislationOutputDir/README.md
 
           echo " * [Legislation $LegislationSection]($LegislationSection.md)" >> $LegislationOutputDir/README.md
         else
