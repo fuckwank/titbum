@@ -5,10 +5,10 @@ OutputRootDir="/ConnectedGovernment/Raw"
 
 mkdir -p $OutputRootDir
 
-CurrentLegislationYearSTART=2015
-CurrentLegislationYearEND=2015
+CurrentLegislationYearSTART=2013
+CurrentLegislationYearEND=2013
 CurrentLegislationVolumeSTART=1
-CurrentLegislationVolumeEND=20
+CurrentLegislationVolumeEND=5
 
 for CurrentLegislationYear in $(seq $CurrentLegislationYearSTART $CurrentLegislationYearEND); do
 
