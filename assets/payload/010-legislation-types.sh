@@ -13,7 +13,7 @@ do
    echo "$line" > /tmp/Current-legislation-type
    Current_legislation_type_url=$(awk -F"," '{print $1}' /tmp/Current-legislation-type)
    Current_legislation_type_name=$(awk -F"," '{print $2}' /tmp/Current-legislation-type)
-   Current_legislation_type_name_safe=$( echo "$Current_legislation_type_name" | tr -d -c ".[:alnum:]" )
+   Current_legislation_type_name_safe=$( echo "$Current_legislation_type_name" | tr -d -c "[:alnum:]" )
    echo "ConnectedGovernment: $Current_legislation_type_name: Creating project"
    Current_legislation_type_id=$(gitlab create_group $Current_legislation_type_name_safe $Current_legislation_type_name_safe | grep -E "(^|\s)$(echo "id" | tr ' ' '_')($|\s)" | awk '{print $4;}')
    gitlab add_group_member "$Current_legislation_type_id" 1 50
