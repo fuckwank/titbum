@@ -3,12 +3,14 @@ set -e
 
 OutputRootDir="/ConnectedGovernment/Raw"
 
+export LOG="/ConnectedGovernment/Gitlab/040-legislation-repos-($(echo \"date --iso-8601='seconds'\" | tr -d -c ".[:alnum:]")).csv"
+echo "\"id\",\"Legislation Title\",\"url\"" > $LOG
 mkdir -p $OutputRootDir
 
-CurrentLegislationYearSTART=2013
-CurrentLegislationYearEND=2013
+CurrentLegislationYearSTART=2001
+CurrentLegislationYearEND=2001
 CurrentLegislationVolumeSTART=1
-CurrentLegislationVolumeEND=5
+CurrentLegislationVolumeEND=3
 
 for CurrentLegislationYear in $(seq $CurrentLegislationYearSTART $CurrentLegislationYearEND); do
 
@@ -25,10 +27,10 @@ for CurrentLegislationYear in $(seq $CurrentLegislationYearSTART $CurrentLegisla
       LegislationYear="$CurrentLegislationYear"
       LegislationVolume="$CurrentLegislationVolume"
       
-      LegislationTitleFull=$( python 039-act-name.py $LegislationType $LegislationYear $LegislationVolume )      
-      LegislationTitle=$( $LegislationTitleFull | tr -d -c ".[:alnum:]" )
+      LegislationTitleFull=$( python 039-act-name.py $LegislationType $LegislationYear $LegislationVolume )
+      LegislationTitle=$(echo $LegislationTitleFull | tr -d -c ".[:alnum:]" )
 
-      if [ "$LegislationTitle" != "404_error" ]; then
+      if [ "$LegislationTitle" != "404error" ]; then
         
         echo "ConnectedGovernment: $Current_legislation_type_name_safe: $LegislationTitle found"
         LegislationOutputDir="$OutputRootDir/$LegislationType/$LegislationTitle"
@@ -46,13 +48,13 @@ for CurrentLegislationYear in $(seq $CurrentLegislationYearSTART $CurrentLegisla
         python 040-act.py $LegislationType $LegislationYear $LegislationVolume 0 | html2text > $LegislationOutputDir/$LegislationSection.md
         if [ "$(cat $LegislationOutputDir/$LegislationSection.md | awk '{print $1}')" != "404" ]; then
           echo "ConnectedGovernment: $Current_legislation_type_name_safe: $LegislationTitle: Got legislation $LegislationSection, saved at $LegislationOutputDir/$LegislationSection.md"
-          
-          echo "The legislation has been collated into the files bellow:" >> $LegislationOutputDir/README.md
-          
-          echo "This legislation describes itself as:" >> $LegislationOutputDir/README.md 
-          echo "" >> $LegislationOutputDir/README.md
-          
+
+          echo "This legislation is:" >> $LegislationOutputDir/README.md 
+          echo " " >> $LegislationOutputDir/README.md
           cat $LegislationOutputDir/$LegislationSection.md | sed '/^#/d' | sed '${/]/d;}' | sed '1{/]/d;}' | sed 's/^/>/' >> $LegislationOutputDir/README.md
+          echo " ">> $LegislationOutputDir/README.md   
+          echo "The legislation has been collated into the files bellow:" >> $LegislationOutputDir/README.md
+          echo " " >> $LegislationOutputDir/README.md
 
           echo " * [Legislation $LegislationSection]($LegislationSection.md)" >> $LegislationOutputDir/README.md
         else
@@ -113,12 +115,27 @@ for CurrentLegislationYear in $(seq $CurrentLegislationYearSTART $CurrentLegisla
         git push -u origin master
         cd $script_dir
         
+        echo "ConnectedGovernment: Adding repo to log"
+        
+        echo "\"$Current_legislation_id\"","\"$LegislationTitleFull\",\"http://connectedgovernment.uk:10022/$Current_legislation_type_name_safe/$( echo $LegislationTitle | tr '[:upper:]' '[:lower:]')\"" >> $LOG
+        
+        echo "ConnectedGovernment: Removing $LegislationTitleFull repo from this legislation-to-md uploader host"
+        rm -rf $LegislationOutputDir
+        
+        echo "ConnectedGovernment: Sucessfully created the $LegislationTitleFull repo"
+        
       else
         echo "ConnectedGovernment: $Current_legislation_type_name_safe: No legislation found"
       fi
       
+      sleep 1s
+      
     done
   
+  sleep 1s
+  
   done
+
+sleep 1s
 
 done
