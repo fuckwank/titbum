@@ -7,8 +7,8 @@ export LOG="/ConnectedGovernment/Gitlab/040-legislation-repos-($(echo \"date --i
 echo "\"id\",\"Legislation Title\",\"url\"" > $LOG
 mkdir -p $OutputRootDir
 
-CurrentLegislationYearSTART=2003
-CurrentLegislationYearEND=2003
+CurrentLegislationYearSTART=1984
+CurrentLegislationYearEND=1984
 CurrentLegislationVolumeSTART=1
 CurrentLegislationVolumeEND=3
 
@@ -28,7 +28,7 @@ for CurrentLegislationYear in $(seq $CurrentLegislationYearSTART $CurrentLegisla
       LegislationVolume="$CurrentLegislationVolume"
       
       LegislationTitleFull=$( python 039-act-name.py $LegislationType $LegislationYear $LegislationVolume )
-      LegislationTitle=$(echo $LegislationTitleFull | tr -d -c ".[:alnum:]" )
+      LegislationTitle=$(echo $LegislationTitleFull | tr -d -c "[:alnum:]" )
 
       if [ "$LegislationTitle" != "404error" ]; then
         
@@ -46,7 +46,7 @@ for CurrentLegislationYear in $(seq $CurrentLegislationYearSTART $CurrentLegisla
         LegislationSection="introduction"
         echo "ConnectedGovernment: $Current_legislation_type_name_safe: $LegislationTitle: Getting legislation $LegislationSection"
         
-        python 040-act.py $LegislationType $LegislationYear $LegislationVolume 0 > $LegislationOutputDir/.raw/$LegislationSection.html 
+        python 040-act.py $LegislationType $LegislationYear $LegislationVolume 0 | sed 's/\(.*\)./\1/' | sed 's/.\(.*\)/\1/' > $LegislationOutputDir/.raw/$LegislationSection.html 
         cat $LegislationOutputDir/.raw/$LegislationSection.html | html2text > $LegislationOutputDir/$LegislationSection.md
         
         if [ "$(cat $LegislationOutputDir/$LegislationSection.md | awk '{print $1}')" != "404" ]; then
@@ -69,8 +69,8 @@ for CurrentLegislationYear in $(seq $CurrentLegislationYearSTART $CurrentLegisla
         LegislationSection="body"
         echo "ConnectecdGovernment: $Current_legislation_type_name_safe: $LegislationTitle: Getting legislation $LegislationSection"
         
-        python 040-act.py $LegislationType $LegislationYear $LegislationVolume 1 > $LegislationOutputDir/.raw/$LegislationSection.html 
-        cat $LegislationOutputDir/.raw/$LegislationSection.html | sed 's/\(.*\)./\1/' | sed 's/.\(.*\)/\1/' | tr -cd '\11\12\40-\176' | sed 's/></> </' | html2text -e | sed 's/^[0-9]./ &  /' | sed 's/^ \([0-9].*\)[ \t](\([0-9]*\))/ \1 \n\2. /' | sed 's/^(\([0-9]*\))/  \1. /' | sed 's/^(\([a-z]*\))/   0. \1. /' | sed 's/\([#]\) \([0-9]\+\)/\1 \2 /' | sed 's/E+W+S+N.I.$/ *&*/' | sed 's/N.I.$/ *&*/' | sed 's/E+W$/ *&*/' | sed 's/S$/ *&*/' | sed 's/W$/ *&*/' | sed 's/E$/ *&*/' > $LegislationOutputDir/$LegislationSection.md
+        python 040-act.py $LegislationType $LegislationYear $LegislationVolume 1 | sed 's/\(.*\)./\1/' | sed 's/.\(.*\)/\1/' > $LegislationOutputDir/.raw/$LegislationSection.html 
+        cat $LegislationOutputDir/.raw/$LegislationSection.html | tr -cd '\11\12\40-\176' | sed 's/></> </' | html2text -e | sed 's/^[0-9]./ &  /' | sed 's/^ \([0-9].*\)[ \t](\([0-9]*\))/ \1 \n\2. /' | sed 's/^(\([0-9]*\))/  \1. /' | sed 's/^(\([a-z]*\))/   0. \1. /' | sed 's/\([#]\) \([0-9]\+\)/\1 \2 /' | sed 's/E+W+S+N.I.$/ *&*/' | sed 's/N.I.$/ *&*/' | sed 's/E+W$/ *&*/' | sed 's/S$/ *&*/' | sed 's/W$/ *&*/' | sed 's/E$/ *&*/' > $LegislationOutputDir/$LegislationSection.md
         
         if [ "$(cat $LegislationOutputDir/$LegislationSection.md | awk '{print $1}')" != "404" ]; then
           echo "ConnectedGovernment: $Current_legislation_type_name_safe: $LegislationTitle: Got legislation $LegislationSection, saved at $LegislationOutputDir/$LegislationSection.md"
@@ -83,7 +83,7 @@ for CurrentLegislationYear in $(seq $CurrentLegislationYearSTART $CurrentLegisla
         LegislationSection="schedules"
         echo "ConnectedGovernment: $Current_legislation_type_name_safe: $LegislationTitle: Getting legislation $LegislationSection"
         
-        python 040-act.py $LegislationType $LegislationYear $LegislationVolume 2 > $LegislationOutputDir/.raw/$LegislationSection.html 
+        python 040-act.py $LegislationType $LegislationYear $LegislationVolume 2 | sed 's/\(.*\)./\1/' | sed 's/.\(.*\)/\1/' > $LegislationOutputDir/.raw/$LegislationSection.html 
         cat $LegislationOutputDir/.raw/$LegislationSection.html | html2text > $LegislationOutputDir/$LegislationSection.md
         
         if [ "$(cat $LegislationOutputDir/$LegislationSection.md | awk '{print $1}')" != "404" ]; then
