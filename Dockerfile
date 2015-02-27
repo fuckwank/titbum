@@ -2,7 +2,7 @@ FROM cannyos/ubuntu
 
 # Install html2text and reporter utilitys
 RUN apt-get update && \
-  apt-get install -y python python-setuptools git curl build-essential python-dev libxml2-dev libxslt-dev python-dev libgd-dev python-matplotlib && \
+  apt-get install -y python python-setuptools git curl build-essential python-dev libxml2-dev libxslt-dev python-dev libgd-dev python-matplotlib language-pack-en && \
   easy_install pip && \
   git clone https://github.com/ConnectedGovernment/html2text.git /root/html2text && \
   mv /root/html2text/html2text.py /bin/html2text && \
