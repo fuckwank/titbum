@@ -7,7 +7,7 @@ export LOG="/ConnectedGovernment/Gitlab/040-legislation-repos-($(echo \"date --i
 echo "\"id\",\"Legislation Title\",\"url\"" > $LOG
 mkdir -p $OutputRootDir
 
-CurrentLegislationYearSTART=2013
+CurrentLegislationYearSTART=2012
 CurrentLegislationYearEND=2015
 CurrentLegislationVolumeSTART=1
 CurrentLegislationVolumeEND=50
