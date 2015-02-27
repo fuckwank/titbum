@@ -16,7 +16,6 @@ try:
    page=urllib2.urlopen(url)
    soup = BeautifulSoup(page.read())
    content=soup.find('h1',{'class':'pageTitle'})
-   content = content.encode('ascii', 'ignore').content('ascii')
    print content.string
 except urllib2.HTTPError, err:
    if err.code == 404:
