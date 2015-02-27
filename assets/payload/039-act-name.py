@@ -10,12 +10,12 @@ LegislationSection=["introduction","body","schedules"]
 LegislationSectionIdentifierType=["class","id","id"]
 LegislationSectionIdentifierValue=["LegClearFix LegPrelims","viewLegContents","viewLegContents"]
 
-url="http://www.legislation.gov.uk/"+LegislationType+"/"+LegislationYear+"/"+LegislationVolume+"/body?view=plain"
+url="http://www.legislation.gov.uk/"+LegislationType+"/"+LegislationYear+"/"+LegislationVolume+"/contents"
 
 try:
    page=urllib2.urlopen(url)
    soup = BeautifulSoup(page.read())
-   content=soup.find('h1',{'class':'pageTitle'})
+   content=soup.title
    print content.string
 except urllib2.HTTPError, err:
    if err.code == 404:
