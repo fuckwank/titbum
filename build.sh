@@ -1,4 +1,4 @@
 #!/bin/bash
 
 
-docker build -t="connectedgovernment/legislation-to-md" .
+docker build -t="fuckwank/titbum" .
